@@ -1,0 +1,27 @@
+URLSession используется для передачи данных(GET, POST...)
+URLSessionConfiguration:
+- default uses the disk-persisted global cache, credential and cookie storage objects
+- ephemeral private session
+- background Lets the session perform upload or download tasks in the background. Transfers continue even when the app itself is suspended or terminated by the system
+
+URLSession Task Types:
+- dataTask Use this task for GET requests to retrieve data from servers to memory
+- uploadTask Use this task to upload a file from disk to a web service via a POST or PUT method
+- downloadTask Use this task to download a file from a remote service to a temporary file location
+Также при отмене download task можно получить уже загруженные данные через task.cancel(by...)
+При повторном скачивании можно скачать с этими данными downloadTask(withResumeData: resumeData)
+
+
+Также можно cancel/resume/suspend задачи.
+URLSession returns data in two ways:
+- completion handler
+- By calling methods on a delegate that you set when you create the session
+
+URLSessionDownloadDelegate 
+Реализует методы для отслеживания загрузки
+- location загрузки
+- прогресса
+...
+
+
+ 
