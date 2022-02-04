@@ -24,4 +24,17 @@ URLSessionDownloadDelegate
 ...
 
 
- 
+BACKGROUND TASKS
+Background работает в свернутом режиме, если приложение высвободили из памяти работать не будет
+
+You must not create more than one session for a background configuration, because the system uses the configuration’s identifier to associate tasks with the session.
+
+If a background task completes when the app isn’t running, the app will relaunch in the background. You’ll need to handle this event from your app delegate.
+
+Это происходит в AppDelegate
+
+application(_:handleEventsForBackgroundURLSession:) wakes up the app to deal with the completed background task. You’ll need to handle two items in this method:
+
+- First, the app needs to recreate the appropriate background configuration and session using the identifier provided by this delegate method. But since this app creates the background session when it instantiates SearchViewController, you’re already reconnected at this point!
+
+- Second, you’ll need to capture the completion handler provided by this delegate method. Invoking the completion handler tells the OS that your app’s done working with all background activities for the current session. It also causes the OS to snapshot your updated UI for display in the app switcher.
