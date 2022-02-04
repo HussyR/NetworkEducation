@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Track {
+class Track: Codable {
     
   // MARK: - Properties
   let artist: String
