@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     }()
     
     lazy var downloadsSession: URLSession = {
-      let configuration = URLSessionConfiguration.default
+        let configuration = URLSessionConfiguration.background(withIdentifier:"back.session")
       return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
@@ -245,6 +245,19 @@ extension ViewController: URLSessionDownloadDelegate {
         if let index = download?.track.index {
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+            }
+        }
+    }
+}
+
+
+extension ViewController: URLSessionDelegate {
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        DispatchQueue.main.async {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+               let completionHandler = appDelegate.backgroundSessionCompletionHandler {
+                appDelegate.backgroundSessionCompletionHandler = nil
+                completionHandler()
             }
         }
     }
